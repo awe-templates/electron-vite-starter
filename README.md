@@ -1,0 +1,343 @@
+# Electron Vite Starter
+
+A modern, type-safe Electron starter template with Vite and TypeScript. Features fully type-safe IPC communication using [@egoist/tipc](https://github.com/egoist/tipc).
+
+## Features
+
+- **Electron** - Latest stable version for cross-platform desktop apps
+- **TypeScript 5.x** - Full type safety with strict mode enabled
+- **Vite 7.x** - Lightning-fast build tool with HMR
+- **@egoist/tipc** - Type-safe IPC communication between main and renderer processes
+- **ESLint v9** - Code linting with flat config
+- **Prettier** - Code formatting
+- **Vitest** - Fast unit testing with Electron API mocks
+- **PostCSS** - CSS processing with Autoprefixer
+
+## Security Features
+
+This template follows Electron security best practices:
+
+- ✅ Context isolation enabled
+- ✅ Node integration disabled in renderer
+- ✅ Preload script with controlled API exposure
+- ✅ Content Security Policy (CSP) headers
+- ✅ Navigation and window creation restrictions
+- ✅ External links open in default browser
+- ✅ Single instance lock
+
+## Project Structure
+
+```
+electron-vite-starter/
+├── electron/              # Electron-specific code
+│   ├── main/              # Main process
+│   │   ├── main.ts        # Entry point
+│   │   ├── window.ts      # Window management
+│   │   ├── menu.ts        # Application menu
+│   │   └── ipc.ts         # IPC handlers
+│   ├── preload/           # Preload scripts
+│   │   └── preload.ts     # API exposure
+│   └── shared/            # Shared IPC definitions
+│       └── ipc.ts         # IPC route definitions
+├── src/                   # Application code (renderer)
+│   ├── index.html         # HTML template
+│   ├── main.ts            # TypeScript entry point
+│   ├── styles.css         # Styles
+│   └── vite-env.d.ts      # Type definitions
+├── tests/                 # Test files
+│   ├── setup.ts           # Test setup and mocks
+│   ├── main/              # Main process tests
+│   └── renderer/          # Renderer process tests
+├── .scripts/              # Build scripts
+│   └── dev.mjs            # Development script
+├── vite.main.config.ts    # Vite config for main process
+├── vite.renderer.config.ts # Vite config for renderer
+├── tsconfig.json          # Base TypeScript config
+├── tsconfig.main.json     # Main process TS config
+├── tsconfig.renderer.json # Renderer process TS config
+├── eslint.config.mjs      # ESLint flat config
+├── .prettierrc            # Prettier config
+└── vitest.config.ts       # Vitest config
+```
+
+## Getting Started
+
+### Prerequisites
+
+- Node.js 18 or higher
+- pnpm (recommended) or npm
+
+### Installation
+
+```bash
+# Clone or download this template
+git clone <repository-url>
+
+# Install dependencies
+pnpm install
+```
+
+### Development
+
+Start the development server with hot reload:
+
+```bash
+pnpm dev
+```
+
+This will:
+1. Start Vite dev server for the renderer process (http://localhost:5173)
+2. Build and watch the main process
+3. Launch Electron with DevTools open
+
+### Building
+
+Build for production:
+
+```bash
+pnpm build
+```
+
+This creates optimized builds for both main and renderer processes in the `dist/` directory.
+
+### Testing
+
+Run tests:
+
+```bash
+# Run all tests
+pnpm test
+
+# Run tests with UI
+pnpm test:ui
+```
+
+### Linting & Formatting
+
+```bash
+# Run ESLint
+pnpm lint
+
+# Fix ESLint issues
+pnpm lint:fix
+
+# Format code with Prettier
+pnpm format
+
+# Check formatting
+pnpm format:check
+
+# Type check
+pnpm type-check
+```
+
+## Type-Safe IPC Communication
+
+This template uses [@egoist/tipc](https://github.com/egoist/tipc) for fully type-safe IPC communication.
+
+### Defining IPC Routes
+
+Define your IPC routes in `electron/shared/ipc.ts`:
+
+```typescript
+import { tipc } from '@egoist/tipc/main';
+
+export const router = {
+  // Simple query
+  greet: tipc
+    .create()
+    .procedure.input<{ name: string }>()
+    .action(async ({ input }) => {
+      return `Hello, ${input.name}!`;
+    }),
+
+  // Complex query with structured response
+  getSystemInfo: tipc
+    .create()
+    .procedure.action(async () => {
+      return {
+        platform: os.platform(),
+        arch: os.arch(),
+        version: os.release(),
+      };
+    }),
+};
+
+export type AppRouter = typeof router;
+```
+
+### Registering Handlers (Main Process)
+
+Register the router in `electron/main/ipc.ts`:
+
+```typescript
+import { registerIpcMain } from '@egoist/tipc/main';
+import { router } from '@shared/ipc';
+
+// Register IPC handlers
+registerIpcMain(router);
+```
+
+### Exposing API (Preload Script)
+
+The preload script (`electron/preload/preload.ts`) creates a type-safe client and exposes it to the renderer:
+
+```typescript
+import { contextBridge, ipcRenderer } from 'electron';
+import { createClient } from '@egoist/tipc/renderer';
+import type { AppRouter } from '@shared/ipc';
+
+const api = createClient<AppRouter>({
+  ipcInvoke: ipcRenderer.invoke.bind(ipcRenderer),
+});
+
+contextBridge.exposeInMainWorld('electronAPI', {
+  api,
+  platform: process.platform,
+});
+```
+
+### Using in Renderer Process
+
+Use the exposed API in your TypeScript code:
+
+```typescript
+// Fully type-safe! TypeScript knows the parameter and return types
+const result = await window.electronAPI.api.greet({ name: 'World' });
+console.log(result); // "Hello, World!"
+
+// Example with button
+const button = document.getElementById('my-button');
+button?.addEventListener('click', async () => {
+  const info = await window.electronAPI.api.getSystemInfo();
+  console.log(info);
+});
+```
+
+## Path Aliases
+
+The following path aliases are configured:
+
+- `@main/*` → `electron/main/*`
+- `@renderer/*` → `src/*`
+- `@shared/*` → `electron/shared/*`
+- `@preload/*` → `electron/preload/*`
+
+Example usage:
+
+```typescript
+// In Electron code
+import { router } from '@shared/ipc';
+import { createMainWindow } from '@main/window';
+
+// In renderer code
+import { MyComponent } from '@renderer/components/MyComponent';
+```
+
+## Environment Variables
+
+Set `ELECTRON_IS_DEV` to enable development mode features:
+
+```bash
+ELECTRON_IS_DEV=1 # Automatically set by the dev script
+```
+
+## Development Workflow
+
+1. **Add new IPC routes**: Define routes in `electron/shared/ipc.ts`
+2. **Implement handlers**: Add handlers in `electron/main/ipc.ts`
+3. **Use in renderer**: Call the type-safe API from your TypeScript code in `src/`
+4. **Test**: Write tests in `tests/` directory
+5. **Build**: Run `pnpm build` for production
+
+## Directory Organization
+
+- **`electron/`** - All Electron-specific code (main process, preload, IPC definitions)
+- **`src/`** - Your application code (renderer process, UI, business logic)
+- **`tests/`** - Test files mirroring the structure
+- **`.scripts/`** - Build and development scripts
+
+## Error Handling
+
+Example of error handling in IPC:
+
+```typescript
+// In electron/shared/ipc.ts
+saveData: tipc
+  .create()
+  .procedure.input<{ key: string; value: unknown }>()
+  .action(async ({ input }) => {
+    try {
+      await saveToDatabase(input.key, input.value);
+      return { success: true, message: 'Saved successfully' };
+    } catch (error) {
+      return {
+        success: false,
+        message: error instanceof Error ? error.message : 'Unknown error',
+      };
+    }
+  }),
+
+// Renderer process
+const result = await window.electronAPI.api.saveData({
+  key: 'myKey',
+  value: 'myValue',
+});
+
+if (result.success) {
+  console.log('Success:', result.message);
+} else {
+  console.error('Error:', result.message);
+}
+```
+
+## VSCode Integration
+
+Recommended extensions (defined in `.vscode/extensions.json`):
+
+- ESLint
+- Prettier
+- TypeScript
+- Vitest
+
+Settings are pre-configured in `.vscode/settings.json` for:
+- Format on save
+- Auto-fix ESLint issues
+- TypeScript workspace version
+
+## Package Scripts
+
+| Script | Description |
+|--------|-------------|
+| `pnpm dev` | Start development server with hot reload |
+| `pnpm build` | Build for production |
+| `pnpm build:main` | Build main process only |
+| `pnpm build:renderer` | Build renderer process only |
+| `pnpm test` | Run all tests |
+| `pnpm test:ui` | Run tests with UI |
+| `pnpm lint` | Run ESLint |
+| `pnpm lint:fix` | Fix ESLint issues |
+| `pnpm format` | Format code with Prettier |
+| `pnpm format:check` | Check code formatting |
+| `pnpm type-check` | Run TypeScript compiler checks |
+
+## Building for Distribution
+
+To package your app for distribution, you can use electron-builder (already included):
+
+```bash
+# Add build configuration to package.json
+# Then run:
+pnpm build
+electron-builder
+```
+
+See [electron-builder documentation](https://www.electron.build/) for more details.
+
+## License
+
+MIT
+
+## Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
