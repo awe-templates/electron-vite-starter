@@ -62,6 +62,12 @@ export default [
         console: 'readonly',
         global: 'readonly',
         NodeJS: 'readonly',
+        localStorage: 'readonly',
+        HTMLButtonElement: 'readonly',
+        HTMLInputElement: 'readonly',
+        HTMLParagraphElement: 'readonly',
+        HTMLDivElement: 'readonly',
+        HTMLElement: 'readonly',
       },
     },
     plugins: {
