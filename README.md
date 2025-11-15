@@ -8,6 +8,38 @@ A modern, type-safe Electron starter template with Vite and TypeScript.
 ![Dependency Version](https://img.shields.io/github/package-json/dependency-version/awe-templates/electron-vite-starter/dev/vitest)
 ![Dependency Version](https://img.shields.io/github/package-json/dependency-version/awe-templates/electron-vite-starter/dev/postcss)
 
+- [Electron Vite Starter](#electron-vite-starter)
+  - [✨ Features](#-features)
+  - [🔒 Security Features](#-security-features)
+  - [📁 Project Structure](#-project-structure)
+  - [🚀 Getting Started](#-getting-started)
+    - [Prerequisites](#prerequisites)
+    - [Installation](#installation)
+    - [Development](#development)
+    - [Building](#building)
+    - [Testing](#testing)
+    - [Linting \& Formatting](#linting--formatting)
+  - [🔌 Type-Safe IPC Communication](#-type-safe-ipc-communication)
+    - [Defining IPC Routes](#defining-ipc-routes)
+    - [Registering Handlers (Main Process)](#registering-handlers-main-process)
+    - [Exposing API (Preload Script)](#exposing-api-preload-script)
+    - [Using in Renderer Process](#using-in-renderer-process)
+  - [🗺️ Path Aliases](#️-path-aliases)
+  - [⚙️ Environment Variables](#️-environment-variables)
+  - [🔄 Development Workflow](#-development-workflow)
+  - [📝 Conventional Commits](#-conventional-commits)
+    - [Commit Message Format](#commit-message-format)
+    - [Allowed Types](#allowed-types)
+    - [Examples](#examples)
+    - [Git Hooks](#git-hooks)
+  - [📂 Directory Organization](#-directory-organization)
+  - [⚠️ Error Handling](#️-error-handling)
+  - [💻 VSCode Integration](#-vscode-integration)
+  - [📦 Package Scripts](#-package-scripts)
+  - [🏗️ Building for Distribution](#️-building-for-distribution)
+  - [📄 License](#-license)
+  - [🤝 Contributing](#-contributing)
+
 ## ✨ Features
 
 - **[Electron](https://electronjs.org/)** - Latest stable version for cross-platform desktop apps
@@ -78,7 +110,7 @@ electron-vite-starter/
 
 ### Prerequisites
 
-- Node.js 18 or higher
+- Node.js 22 or higher
 - pnpm (recommended) or npm
 
 ### Installation
