@@ -1,4 +1,4 @@
-name: CI
+name: test
 
 on:
   push:
@@ -13,7 +13,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, macos-latest, windows-latest]
-        node-version: [22.x]
+        node-version: [24.x]
 
     steps:
       - name: Checkout code
@@ -22,7 +22,7 @@ jobs:
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
         with:
-          version: 9
+          version: latest
 
       - name: Setup Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v4
@@ -61,12 +61,12 @@ jobs:
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
         with:
-          version: 9
+          version: latest
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 22.x
+          node-version: 24.x
           cache: 'pnpm'
 
       - name: Install dependencies
@@ -74,17 +74,14 @@ jobs:
 
       - name: Build application
         run: pnpm build
+      - name: Package application
+        run: pnpm package
+        if: matrix.os == 'ubuntu-latest'
 
-      # Note: Package step is commented out because it requires app icons
-      # Uncomment after adding icons to build/ directory
-      # - name: Package application
-      #   run: pnpm package
-      #   if: matrix.os == 'ubuntu-latest'
-      #
-      # - name: Package application (macOS)
-      #   run: pnpm package:mac
-      #   if: matrix.os == 'macos-latest'
-      #
-      # - name: Package application (Windows)
-      #   run: pnpm package:win
-      #   if: matrix.os == 'windows-latest'
+      - name: Package application (macOS)
+        run: pnpm package:mac
+        if: matrix.os == 'macos-latest'
+
+      - name: Package application (Windows)
+        run: pnpm package:win
+        if: matrix.os == 'windows-latest'
