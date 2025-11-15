@@ -113,6 +113,7 @@ electron-vite-starter/
 ├── eslint.config.mjs      # ESLint flat config
 ├── commitlint.config.mjs  # Commitlint config
 ├── .prettierrc            # Prettier config
+├── .gitattributes         # Git attributes for consistent line endings
 └── vitest.config.ts       # Vitest config
 ```
 
