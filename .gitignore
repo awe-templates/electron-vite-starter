@@ -7,7 +7,16 @@ yarn.lock
 # Build output
 dist/
 out/
-build/
+
+# electron-builder output
+release/
+
+# Build resources (ignore actual icons, keep structure)
+build/*.icns
+build/*.ico
+build/*.png
+build/icons/*.png
+!build/icons/.gitkeep
 
 # Electron
 *.exe

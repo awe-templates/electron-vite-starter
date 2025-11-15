@@ -89,6 +89,11 @@ electron-vite-starter/
 │   ├── setup.ts           # Test setup and mocks
 │   ├── main/              # Main process tests
 │   └── renderer/          # Renderer process tests
+├── build/                 # Build resources
+│   ├── README.md          # Icon setup instructions
+│   ├── icon.icns          # macOS icon (add this)
+│   ├── icon.ico           # Windows icon (add this)
+│   └── icons/             # Linux icons (add these)
 ├── .scripts/              # Build scripts
 │   └── dev.mjs            # Development script
 ├── .husky/                # Git hooks
@@ -99,6 +104,7 @@ electron-vite-starter/
 ├── tsconfig.json          # Base TypeScript config
 ├── tsconfig.main.json     # Main process TS config
 ├── tsconfig.renderer.json # Renderer process TS config
+├── electron-builder.yml   # electron-builder config
 ├── eslint.config.mjs      # ESLint flat config
 ├── commitlint.config.mjs  # Commitlint config
 ├── .prettierrc            # Prettier config
@@ -404,6 +410,10 @@ Settings are pre-configured in `.vscode/settings.json` for:
 | `pnpm build` | Build for production |
 | `pnpm build:main` | Build main process only |
 | `pnpm build:renderer` | Build renderer process only |
+| `pnpm package` | Build and package for current platform |
+| `pnpm package:mac` | Build and package for macOS |
+| `pnpm package:win` | Build and package for Windows |
+| `pnpm package:linux` | Build and package for Linux |
 | `pnpm test` | Run all tests |
 | `pnpm test:ui` | Run tests with UI |
 | `pnpm lint` | Run ESLint |
@@ -414,16 +424,93 @@ Settings are pre-configured in `.vscode/settings.json` for:
 
 ## 🏗️ Building for Distribution
 
-To package your app for distribution, you can use electron-builder (already included):
+This template comes with electron-builder pre-configured for packaging and distributing your application.
+
+### Prerequisites
+
+Before building for distribution, you need to provide application icons. See [`build/README.md`](build/README.md) for detailed instructions on creating and adding icons for each platform.
+
+### Build Configuration
+
+The electron-builder configuration is already set up in `electron-builder.yml` with sensible defaults:
+
+- **appId**: `com.electron.app` (change this to your app's identifier)
+- **productName**: `Electron Vite Starter` (change this to your app's name)
+- **Output directory**: `release/`
+- **Build resources**: `build/` (place icons here)
+
+### Packaging Commands
 
 ```bash
-# Add build configuration to package.json
-# Then run:
-pnpm build
-electron-builder
+# Package for current platform
+pnpm package
+
+# Package for specific platforms
+pnpm package:mac     # Creates DMG and ZIP for macOS
+pnpm package:win     # Creates NSIS installer and portable EXE for Windows
+pnpm package:linux   # Creates AppImage and DEB for Linux
 ```
 
-See [electron-builder documentation](https://www.electron.build/) for more details.
+### Build Outputs
+
+After packaging, you'll find the installers in the `release/` directory:
+
+**macOS**
+- `.dmg` - Disk image installer
+- `.zip` - Compressed application
+
+**Windows**
+- `.exe` - NSIS installer
+- `.exe` (portable) - Standalone executable
+
+**Linux**
+- `.AppImage` - Universal Linux application
+- `.deb` - Debian package
+
+### Customizing the Build
+
+Edit `electron-builder.yml` to customize your build configuration:
+
+```yaml
+appId: com.yourcompany.yourapp
+productName: Your App Name
+copyright: Copyright © 2025 Your Company
+
+mac:
+  category: public.app-category.productivity
+
+win:
+  target:
+    - nsis
+    - portable
+    - zip
+
+linux:
+  target:
+    - AppImage
+    - deb
+    - rpm
+  category: Utility
+```
+
+### Code Signing
+
+For production releases, you should code sign your applications:
+
+**macOS**: Set up Apple Developer certificates and add to `electron-builder.yml`:
+```yaml
+mac:
+  identity: Developer ID Application: Your Name (TEAM_ID)
+```
+
+**Windows**: Obtain a code signing certificate and configure in `electron-builder.yml`:
+```yaml
+win:
+  certificateFile: path/to/cert.pfx
+  certificatePassword: password
+```
+
+See [electron-builder documentation](https://www.electron.build/) for comprehensive configuration options and platform-specific details.
 
 ## 📄 License
 
