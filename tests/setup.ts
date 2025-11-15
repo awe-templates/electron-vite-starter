@@ -1,5 +1,10 @@
 import { vi } from 'vitest';
 
+// Mock fs module
+vi.mock('fs', () => ({
+  existsSync: vi.fn(() => true),
+}));
+
 // Mock Electron APIs
 export const mockBrowserWindow = {
   loadURL: vi.fn(),
@@ -30,6 +35,8 @@ export const mockApp = {
   on: vi.fn(),
   quit: vi.fn(),
   getPath: vi.fn((name: string) => `/mock/path/${name}`),
+  getAppPath: vi.fn(() => '/Users/eyuperdogan/Desktop/gh/at/electron-vite-starter'),
+  getVersion: vi.fn(() => '1.0.0'),
   whenReady: vi.fn(() => Promise.resolve()),
   isPackaged: false,
 };
