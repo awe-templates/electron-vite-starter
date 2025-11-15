@@ -2,12 +2,12 @@
 
 A modern, type-safe Electron starter template with Vite and TypeScript.
 
-![CI](https://github.com/awe-templates/electron-vite-starter/workflows/test/badge.svg)
-![Dependency Version](https://img.shields.io/github/package-json/dependency-version/awe-templates/electron-vite-starter/dev/electron)
-![Dependency Version](https://img.shields.io/github/package-json/dependency-version/awe-templates/electron-vite-starter/dev/typescript)
-![Dependency Version](https://img.shields.io/github/package-json/dependency-version/awe-templates/electron-vite-starter/dev/vite)
-![Dependency Version](https://img.shields.io/github/package-json/dependency-version/awe-templates/electron-vite-starter/dev/vitest)
-![Dependency Version](https://img.shields.io/github/package-json/dependency-version/awe-templates/electron-vite-starter/dev/postcss)
+![CI Test Status](https://github.com/awe-templates/electron-vite-starter/workflows/test/badge.svg)
+![Electron Version](https://img.shields.io/github/package-json/dependency-version/awe-templates/electron-vite-starter/dev/electron)
+![TypeScript Version](https://img.shields.io/github/package-json/dependency-version/awe-templates/electron-vite-starter/dev/typescript)
+![Vite Version](https://img.shields.io/github/package-json/dependency-version/awe-templates/electron-vite-starter/dev/vite)
+![Vitest Version](https://img.shields.io/github/package-json/dependency-version/awe-templates/electron-vite-starter/dev/vitest)
+![PostCSS Version](https://img.shields.io/github/package-json/dependency-version/awe-templates/electron-vite-starter/dev/postcss)
 
 - [Electron Vite Starter](#electron-vite-starter)
   - [✨ Features](#-features)
