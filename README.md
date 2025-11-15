@@ -2,6 +2,7 @@
 
 A modern, type-safe Electron starter template with Vite and TypeScript.
 
+![CI](https://github.com/awe-templates/electron-vite-starter/workflows/CI/badge.svg)
 ![Dependency Version](https://img.shields.io/github/package-json/dependency-version/awe-templates/electron-vite-starter/dev/electron)
 ![Dependency Version](https://img.shields.io/github/package-json/dependency-version/awe-templates/electron-vite-starter/dev/typescript)
 ![Dependency Version](https://img.shields.io/github/package-json/dependency-version/awe-templates/electron-vite-starter/dev/vite)
@@ -52,6 +53,7 @@ A modern, type-safe Electron starter template with Vite and TypeScript.
 - **[PostCSS](https://postcss.org/)** - CSS processing with Autoprefixer
 - **[Commitlint](https://commitlint.js.org/)** - Conventional commit message validation
 - **[Husky](https://typicode.github.io/husky/)** - Git hooks for automated quality checks
+- **[GitHub Actions](https://github.com/features/actions)** - CI/CD workflow for automated testing across platforms
 
 ## 🔒 Security Features
 
@@ -96,6 +98,9 @@ electron-vite-starter/
 │   └── icons/             # Linux icons (add these)
 ├── .scripts/              # Build scripts
 │   └── dev.mjs            # Development script
+├── .github/               # GitHub configuration
+│   └── workflows/         # CI/CD workflows
+│       └── ci.yml         # Continuous integration
 ├── .husky/                # Git hooks
 │   ├── pre-commit         # Pre-commit hook (lint, type-check, test)
 │   └── commit-msg         # Commit message validation
