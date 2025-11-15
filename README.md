@@ -14,6 +14,7 @@ A modern, type-safe Electron starter template with Vite and TypeScript.
 - **TypeScript** - Full type safety with strict mode enabled
 - **Vite** - Lightning-fast build tool with HMR
 - **@egoist/tipc** - Type-safe IPC communication
+- **@electron-toolkit** - Utilities for Electron development (utils, preload, tsconfig)
 - **ESLint** - Code linting with flat config
 - **Prettier** - Code formatting
 - **Vitest** - Fast unit testing with Electron API mocks

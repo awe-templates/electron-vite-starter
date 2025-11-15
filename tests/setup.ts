@@ -70,3 +70,17 @@ vi.mock('electron', () => ({
     openExternal: vi.fn(),
   },
 }));
+
+// Mock @electron-toolkit/utils
+vi.mock('@electron-toolkit/utils', () => ({
+  is: {
+    dev: true,
+    macOS: false,
+    windows: false,
+    linux: false,
+  },
+  optimizer: {
+    watchWindowShortcuts: vi.fn(),
+  },
+  platform: 'darwin',
+}));

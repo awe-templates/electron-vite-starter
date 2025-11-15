@@ -1,4 +1,5 @@
 import { app, BrowserWindow } from 'electron';
+import { optimizer, is } from '@electron-toolkit/utils';
 import '@main/ipc';
 import { createMainWindow } from '@main/window';
 import { setupMenu } from '@main/menu';
@@ -9,6 +10,11 @@ let mainWindow: BrowserWindow | null = null;
 app.whenReady().then(() => {
   mainWindow = createMainWindow();
   setupMenu();
+
+  // Enable keyboard shortcuts (F12 for DevTools in dev, block Ctrl+R in production)
+  app.on('browser-window-created', (_, window) => {
+    optimizer.watchWindowShortcuts(window);
+  });
 
   app.on('activate', () => {
     // On macOS it's common to re-create a window in the app when the
@@ -50,7 +56,7 @@ app.on('web-contents-created', (_event, contents) => {
     const parsedUrl = new URL(navigationUrl);
 
     // Only allow navigation to localhost in development
-    if (process.env.ELECTRON_IS_DEV) {
+    if (is.dev) {
       if (parsedUrl.origin !== 'http://localhost:5173') {
         event.preventDefault();
       }

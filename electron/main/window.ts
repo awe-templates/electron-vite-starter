@@ -1,12 +1,13 @@
 import { BrowserWindow, shell, app } from 'electron';
 import { join } from 'path';
 import { existsSync } from 'fs';
+import { is } from '@electron-toolkit/utils';
 
 export function createMainWindow(): BrowserWindow {
   // Try multiple paths for preload script
   let preloadPath: string;
 
-  if (process.env.ELECTRON_IS_DEV) {
+  if (is.dev) {
     // In development, use path relative to app root
     preloadPath = join(app.getAppPath(), 'dist', 'main', 'preload.js');
   } else {
@@ -61,7 +62,7 @@ export function createMainWindow(): BrowserWindow {
   });
 
   // Load the app
-  if (process.env.ELECTRON_IS_DEV) {
+  if (is.dev) {
     mainWindow.loadURL('http://localhost:5173');
     // Open DevTools in development
     mainWindow.webContents.openDevTools();
