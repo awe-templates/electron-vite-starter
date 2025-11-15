@@ -25,10 +25,7 @@ function startElectron() {
 
   electronProcess = spawn(electron, ['.'], {
     stdio: 'inherit',
-    env: {
-      ...process.env,
-      ELECTRON_IS_DEV: '1',
-    },
+    env: process.env,
   });
 
   electronProcess.on('close', (code) => {

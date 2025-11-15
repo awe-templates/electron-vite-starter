@@ -25,7 +25,6 @@ A modern, type-safe Electron starter template with Vite and TypeScript.
     - [Exposing API (Preload Script)](#exposing-api-preload-script)
     - [Using in Renderer Process](#using-in-renderer-process)
   - [🗺️ Path Aliases](#️-path-aliases)
-  - [⚙️ Environment Variables](#️-environment-variables)
   - [🔄 Development Workflow](#-development-workflow)
   - [📝 Conventional Commits](#-conventional-commits)
     - [Commit Message Format](#commit-message-format)
@@ -285,19 +284,8 @@ Example usage:
 import { router } from '@shared/ipc';
 import { createMainWindow } from '@main/window';
 
-// In renderer code
-import { MyComponent } from '@renderer/components/MyComponent';
-
 // Import types
 import type { ElectronAPI } from '@preload/preload';
-```
-
-## ⚙️ Environment Variables
-
-Set `ELECTRON_IS_DEV` to enable development mode features:
-
-```bash
-ELECTRON_IS_DEV=1 # Automatically set by the dev script
 ```
 
 ## 🔄 Development Workflow
