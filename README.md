@@ -8,21 +8,21 @@ A modern, type-safe Electron starter template with Vite and TypeScript.
 ![Dependency Version](https://img.shields.io/github/package-json/dependency-version/awe-templates/electron-vite-starter/dev/vitest)
 ![Dependency Version](https://img.shields.io/github/package-json/dependency-version/awe-templates/electron-vite-starter/dev/postcss)
 
-## Features
+## ✨ Features
 
-- **Electron** - Latest stable version for cross-platform desktop apps
-- **TypeScript** - Full type safety with strict mode enabled
-- **Vite** - Lightning-fast build tool with HMR
-- **@egoist/tipc** - Type-safe IPC communication
-- **@electron-toolkit** - Utilities for Electron development (utils, preload, tsconfig)
-- **ESLint** - Code linting with flat config
-- **Prettier** - Code formatting
-- **Vitest** - Fast unit testing with Electron API mocks
-- **PostCSS** - CSS processing with Autoprefixer
-- **Commitlint** - Conventional commit message validation
-- **Husky** - Git hooks for automated quality checks
+- **[Electron](https://electronjs.org/)** - Latest stable version for cross-platform desktop apps
+- **[TypeScript](https://www.typescriptlang.org/)** - Full type safety with strict mode enabled
+- **[Vite](https://vite.dev/)** - Lightning-fast build tool with HMR
+- **[@egoist/tipc](https://github.com/egoist/tipc)** - Type-safe IPC communication
+- **[@electron-toolkit](https://github.com/alex8088/electron-toolkit)** - Utilities for Electron development (utils, preload, tsconfig)
+- **[ESLint](https://eslint.org/)** - Code linting with flat config
+- **[Prettier](https://prettier.io/)** - Code formatting
+- **[Vitest](https://vitest.dev/)** - Fast unit testing with Electron API mocks
+- **[PostCSS](https://postcss.org/)** - CSS processing with Autoprefixer
+- **[Commitlint](https://commitlint.js.org/)** - Conventional commit message validation
+- **[Husky](https://typicode.github.io/husky/)** - Git hooks for automated quality checks
 
-## Security Features
+## 🔒 Security Features
 
 This template follows Electron security best practices:
 
@@ -34,7 +34,7 @@ This template follows Electron security best practices:
 - ✅ External links open in default browser
 - ✅ Single instance lock
 
-## Project Structure
+## 📁 Project Structure
 
 ```txt
 electron-vite-starter/
@@ -74,7 +74,7 @@ electron-vite-starter/
 └── vitest.config.ts       # Vitest config
 ```
 
-## Getting Started
+## 🚀 Getting Started
 
 ### Prerequisites
 
@@ -146,7 +146,7 @@ pnpm format:check
 pnpm type-check
 ```
 
-## Type-Safe IPC Communication
+## 🔌 Type-Safe IPC Communication
 
 This template uses [@egoist/tipc](https://github.com/egoist/tipc) for fully type-safe IPC communication.
 
@@ -236,7 +236,7 @@ button?.addEventListener('click', async () => {
 });
 ```
 
-## Path Aliases
+## 🗺️ Path Aliases
 
 The following path aliases are configured:
 
@@ -260,7 +260,7 @@ import { MyComponent } from '@renderer/components/MyComponent';
 import type { ElectronAPI } from '@preload/preload';
 ```
 
-## Environment Variables
+## ⚙️ Environment Variables
 
 Set `ELECTRON_IS_DEV` to enable development mode features:
 
@@ -268,7 +268,7 @@ Set `ELECTRON_IS_DEV` to enable development mode features:
 ELECTRON_IS_DEV=1 # Automatically set by the dev script
 ```
 
-## Development Workflow
+## 🔄 Development Workflow
 
 1. **Add new IPC routes**: Define routes in `electron/shared/ipc.ts`
 2. **Implement handlers**: Add handlers in `electron/main/ipc.ts`
@@ -276,7 +276,7 @@ ELECTRON_IS_DEV=1 # Automatically set by the dev script
 4. **Test**: Write tests in `tests/` directory
 5. **Build**: Run `pnpm build` for production
 
-## Conventional Commits
+## 📝 Conventional Commits
 
 This project uses [Conventional Commits](https://www.conventionalcommits.org/) with automated validation via commitlint and husky.
 
@@ -320,14 +320,14 @@ The project uses husky to run automated checks:
 - **pre-commit**: Runs `pnpm lint`, `pnpm type-check`, and `pnpm test` before allowing commits
 - **commit-msg**: Validates commit messages follow conventional commit format
 
-## Directory Organization
+## 📂 Directory Organization
 
 - **`electron/`** - All Electron-specific code (main process, preload, IPC definitions)
 - **`src/`** - Your application code (renderer process, UI, business logic)
 - **`tests/`** - Test files mirroring the structure
 - **`.scripts/`** - Build and development scripts
 
-## Error Handling
+## ⚠️ Error Handling
 
 Example of error handling in IPC:
 
@@ -361,7 +361,7 @@ if (result.success) {
 }
 ```
 
-## VSCode Integration
+## 💻 VSCode Integration
 
 Recommended extensions (defined in `.vscode/extensions.json`):
 
@@ -376,7 +376,7 @@ Settings are pre-configured in `.vscode/settings.json` for:
 - Auto-fix ESLint issues
 - TypeScript workspace version
 
-## Package Scripts
+## 📦 Package Scripts
 
 | Script | Description |
 |--------|-------------|
@@ -392,7 +392,7 @@ Settings are pre-configured in `.vscode/settings.json` for:
 | `pnpm format:check` | Check code formatting |
 | `pnpm type-check` | Run TypeScript compiler checks |
 
-## Building for Distribution
+## 🏗️ Building for Distribution
 
 To package your app for distribution, you can use electron-builder (already included):
 
@@ -405,10 +405,10 @@ electron-builder
 
 See [electron-builder documentation](https://www.electron.build/) for more details.
 
-## License
+## 📄 License
 
 MIT
 
-## Contributing
+## 🤝 Contributing
 
 Contributions are welcome! Please feel free to submit a Pull Request.
