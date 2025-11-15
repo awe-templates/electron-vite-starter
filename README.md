@@ -2,7 +2,7 @@
 
 A modern, type-safe Electron starter template with Vite and TypeScript.
 
-![CI](https://github.com/awe-templates/electron-vite-starter/workflows/CI/badge.svg)
+![CI](https://github.com/awe-templates/electron-vite-starter/workflows/test/badge.svg)
 ![Dependency Version](https://img.shields.io/github/package-json/dependency-version/awe-templates/electron-vite-starter/dev/electron)
 ![Dependency Version](https://img.shields.io/github/package-json/dependency-version/awe-templates/electron-vite-starter/dev/typescript)
 ![Dependency Version](https://img.shields.io/github/package-json/dependency-version/awe-templates/electron-vite-starter/dev/vite)
@@ -37,6 +37,12 @@ A modern, type-safe Electron starter template with Vite and TypeScript.
   - [💻 VSCode Integration](#-vscode-integration)
   - [📦 Package Scripts](#-package-scripts)
   - [🏗️ Building for Distribution](#️-building-for-distribution)
+    - [Prerequisites](#prerequisites-1)
+    - [Build Configuration](#build-configuration)
+    - [Packaging Commands](#packaging-commands)
+    - [Build Outputs](#build-outputs)
+    - [Customizing the Build](#customizing-the-build)
+    - [Code Signing](#code-signing)
   - [📄 License](#-license)
   - [🤝 Contributing](#-contributing)
 
@@ -462,14 +468,17 @@ pnpm package:linux   # Creates AppImage and DEB for Linux
 After packaging, you'll find the installers in the `release/` directory:
 
 **macOS**
+
 - `.dmg` - Disk image installer
 - `.zip` - Compressed application
 
 **Windows**
+
 - `.exe` - NSIS installer
 - `.exe` (portable) - Standalone executable
 
 **Linux**
+
 - `.AppImage` - Universal Linux application
 - `.deb` - Debian package
 
@@ -504,12 +513,14 @@ linux:
 For production releases, you should code sign your applications:
 
 **macOS**: Set up Apple Developer certificates and add to `electron-builder.yml`:
+
 ```yaml
 mac:
   identity: Developer ID Application: Your Name (TEAM_ID)
 ```
 
 **Windows**: Obtain a code signing certificate and configure in `electron-builder.yml`:
+
 ```yaml
 win:
   certificateFile: path/to/cert.pfx
