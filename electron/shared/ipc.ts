@@ -3,14 +3,6 @@ import os from 'os';
 
 // Define your IPC routes with full type safety
 export const router = {
-  // Example: Simple greeting
-  greet: tipc
-    .create()
-    .procedure.input<{ name: string }>()
-    .action(async ({ input }) => {
-      return `Hello, ${input.name}! Welcome to Electron.`;
-    }),
-
   // Example: Get app version
   getAppVersion: tipc.create().procedure.action(async () => {
     const { app } = await import('electron');

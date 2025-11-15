@@ -156,15 +156,14 @@ Define your IPC routes in `electron/shared/ipc.ts`:
 
 ```typescript
 import { tipc } from '@egoist/tipc/main';
+import os from 'os';
 
 export const router = {
-  // Simple query
-  greet: tipc
-    .create()
-    .procedure.input<{ name: string }>()
-    .action(async ({ input }) => {
-      return `Hello, ${input.name}!`;
-    }),
+  // Get app version
+  getAppVersion: tipc.create().procedure.action(async () => {
+    const { app } = await import('electron');
+    return app.getVersion();
+  }),
 
   // Complex query with structured response
   getSystemInfo: tipc
@@ -174,6 +173,7 @@ export const router = {
         platform: os.platform(),
         arch: os.arch(),
         version: os.release(),
+        hostname: os.hostname(),
       };
     }),
 };
@@ -210,7 +210,6 @@ const api = createClient<AppRouter>({
 // Expose individual API methods (Proxy objects cannot be cloned by contextBridge)
 contextBridge.exposeInMainWorld('electronAPI', {
   api: {
-    greet: (input: { name: string }) => api.greet(input),
     getAppVersion: () => api.getAppVersion(),
     saveData: (input: { key: string; value: unknown }) => api.saveData(input),
     getSystemInfo: () => api.getSystemInfo(),
@@ -226,8 +225,8 @@ Use the exposed API in your TypeScript code:
 
 ```typescript
 // Fully type-safe! TypeScript knows the parameter and return types
-const result = await window.electronAPI.api.greet({ name: 'World' });
-console.log(result); // "Hello, World!"
+const version = await window.electronAPI.api.getAppVersion();
+console.log('App version:', version);
 
 // Example with button
 const button = document.getElementById('my-button');

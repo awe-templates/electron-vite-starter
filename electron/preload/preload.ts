@@ -17,7 +17,6 @@ console.log('[Preload] API client created:', !!api);
 contextBridge.exposeInMainWorld('electronAPI', {
   // Expose individual API methods
   api: {
-    greet: (input: { name: string }) => api.greet(input),
     getAppVersion: () => api.getAppVersion(),
     saveData: (input: { key: string; value: unknown }) => api.saveData(input),
     getSystemInfo: () => api.getSystemInfo(),
@@ -33,7 +32,6 @@ console.log('[Preload] electronAPI exposed to main world');
 // Type definitions for renderer process
 export type ElectronAPI = {
   api: {
-    greet: (input: { name: string }) => Promise<string>;
     getAppVersion: () => Promise<string>;
     saveData: (input: { key: string; value: unknown }) => Promise<{
       success: boolean;
