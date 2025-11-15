@@ -1,17 +1,25 @@
 # Electron Vite Starter
 
-A modern, type-safe Electron starter template with Vite and TypeScript. Features fully type-safe IPC communication using [@egoist/tipc](https://github.com/egoist/tipc).
+A modern, type-safe Electron starter template with Vite and TypeScript.
+
+![Dependency Version](https://img.shields.io/github/package-json/dependency-version/awe-templates/electron-vite-starter/dev/electron)
+![Dependency Version](https://img.shields.io/github/package-json/dependency-version/awe-templates/electron-vite-starter/dev/typescript)
+![Dependency Version](https://img.shields.io/github/package-json/dependency-version/awe-templates/electron-vite-starter/dev/vite)
+![Dependency Version](https://img.shields.io/github/package-json/dependency-version/awe-templates/electron-vite-starter/dev/vitest)
+![Dependency Version](https://img.shields.io/github/package-json/dependency-version/awe-templates/electron-vite-starter/dev/postcss)
 
 ## Features
 
 - **Electron** - Latest stable version for cross-platform desktop apps
-- **TypeScript 5.x** - Full type safety with strict mode enabled
-- **Vite 7.x** - Lightning-fast build tool with HMR
-- **@egoist/tipc** - Type-safe IPC communication between main and renderer processes
-- **ESLint v9** - Code linting with flat config
+- **TypeScript** - Full type safety with strict mode enabled
+- **Vite** - Lightning-fast build tool with HMR
+- **@egoist/tipc** - Type-safe IPC communication
+- **ESLint** - Code linting with flat config
 - **Prettier** - Code formatting
 - **Vitest** - Fast unit testing with Electron API mocks
 - **PostCSS** - CSS processing with Autoprefixer
+- **Commitlint** - Conventional commit message validation
+- **Husky** - Git hooks for automated quality checks
 
 ## Security Features
 
@@ -27,7 +35,7 @@ This template follows Electron security best practices:
 
 ## Project Structure
 
-```
+```txt
 electron-vite-starter/
 ├── electron/              # Electron-specific code
 │   ├── main/              # Main process
@@ -42,20 +50,25 @@ electron-vite-starter/
 ├── src/                   # Application code (renderer)
 │   ├── index.html         # HTML template
 │   ├── main.ts            # TypeScript entry point
-│   ├── styles.css         # Styles
-│   └── vite-env.d.ts      # Type definitions
+│   └── styles.css         # Styles
+├── types/                 # Type definitions
+│   └── vite-env.d.ts      # Vite and Electron API types
 ├── tests/                 # Test files
 │   ├── setup.ts           # Test setup and mocks
 │   ├── main/              # Main process tests
 │   └── renderer/          # Renderer process tests
 ├── .scripts/              # Build scripts
 │   └── dev.mjs            # Development script
+├── .husky/                # Git hooks
+│   ├── pre-commit         # Pre-commit hook (lint, type-check, test)
+│   └── commit-msg         # Commit message validation
 ├── vite.main.config.ts    # Vite config for main process
 ├── vite.renderer.config.ts # Vite config for renderer
 ├── tsconfig.json          # Base TypeScript config
 ├── tsconfig.main.json     # Main process TS config
 ├── tsconfig.renderer.json # Renderer process TS config
 ├── eslint.config.mjs      # ESLint flat config
+├── commitlint.config.mjs  # Commitlint config
 ├── .prettierrc            # Prettier config
 └── vitest.config.ts       # Vitest config
 ```
@@ -86,7 +99,8 @@ pnpm dev
 ```
 
 This will:
-1. Start Vite dev server for the renderer process (http://localhost:5173)
+
+1. Start Vite dev server for the renderer process (<http://localhost:5173>)
 2. Build and watch the main process
 3. Launch Electron with DevTools open
 
@@ -180,19 +194,27 @@ registerIpcMain(router);
 
 ### Exposing API (Preload Script)
 
-The preload script (`electron/preload/preload.ts`) creates a type-safe client and exposes it to the renderer:
+The preload script (`electron/preload/preload.ts`) creates a type-safe client and exposes individual methods to the renderer:
 
 ```typescript
 import { contextBridge, ipcRenderer } from 'electron';
 import { createClient } from '@egoist/tipc/renderer';
 import type { AppRouter } from '@shared/ipc';
 
+// Create type-safe IPC client
 const api = createClient<AppRouter>({
   ipcInvoke: ipcRenderer.invoke.bind(ipcRenderer),
 });
 
+// Expose individual API methods (Proxy objects cannot be cloned by contextBridge)
 contextBridge.exposeInMainWorld('electronAPI', {
-  api,
+  api: {
+    greet: (input: { name: string }) => api.greet(input),
+    getAppVersion: () => api.getAppVersion(),
+    saveData: (input: { key: string; value: unknown }) => api.saveData(input),
+    getSystemInfo: () => api.getSystemInfo(),
+    getVersions: () => api.getVersions(),
+  },
   platform: process.platform,
 });
 ```
@@ -222,6 +244,7 @@ The following path aliases are configured:
 - `@renderer/*` → `src/*`
 - `@shared/*` → `electron/shared/*`
 - `@preload/*` → `electron/preload/*`
+- `@types/*` → `types/*`
 
 Example usage:
 
@@ -232,6 +255,9 @@ import { createMainWindow } from '@main/window';
 
 // In renderer code
 import { MyComponent } from '@renderer/components/MyComponent';
+
+// Import types
+import type { ElectronAPI } from '@preload/preload';
 ```
 
 ## Environment Variables
@@ -249,6 +275,50 @@ ELECTRON_IS_DEV=1 # Automatically set by the dev script
 3. **Use in renderer**: Call the type-safe API from your TypeScript code in `src/`
 4. **Test**: Write tests in `tests/` directory
 5. **Build**: Run `pnpm build` for production
+
+## Conventional Commits
+
+This project uses [Conventional Commits](https://www.conventionalcommits.org/) with automated validation via commitlint and husky.
+
+### Commit Message Format
+
+```markdown
+<type>(<optional scope>): <subject>
+
+<optional body>
+
+<optional footer>
+```
+
+### Allowed Types
+
+- `feat` - New feature
+- `fix` - Bug fix
+- `docs` - Documentation only changes
+- `style` - Code style changes (formatting, etc.)
+- `refactor` - Code refactoring
+- `perf` - Performance improvements
+- `test` - Adding or updating tests
+- `build` - Build system or dependency changes
+- `ci` - CI configuration changes
+- `chore` - Other changes that don't modify src or test files
+- `revert` - Reverts a previous commit
+
+### Examples
+
+```bash
+feat: add dark mode toggle
+fix(auth): resolve login timeout issue
+docs: update README with installation steps
+test: add unit tests for IPC handlers
+```
+
+### Git Hooks
+
+The project uses husky to run automated checks:
+
+- **pre-commit**: Runs `pnpm lint`, `pnpm type-check`, and `pnpm test` before allowing commits
+- **commit-msg**: Validates commit messages follow conventional commit format
 
 ## Directory Organization
 
@@ -301,6 +371,7 @@ Recommended extensions (defined in `.vscode/extensions.json`):
 - Vitest
 
 Settings are pre-configured in `.vscode/settings.json` for:
+
 - Format on save
 - Auto-fix ESLint issues
 - TypeScript workspace version
