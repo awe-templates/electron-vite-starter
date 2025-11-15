@@ -1,7 +1,7 @@
 {
   "name": "electron-vite-starter",
   "version": "1.0.0",
-  "description": "Modern, type-safe Electron starter template with Vite, TypeScript, and @egoist/tipc",
+  "description": "Modern, type-safe Electron starter template with Vite, TypeScript",
   "main": "dist/main/main.js",
   "author": "",
   "license": "MIT",
