@@ -13,9 +13,16 @@ console.log('[Preload] API client created:', !!api);
 
 // Expose protected methods that allow the renderer process to use
 // the ipcRenderer without exposing the entire object
+// Note: We expose each method individually because Proxy objects cannot be cloned by contextBridge
 contextBridge.exposeInMainWorld('electronAPI', {
-  // Expose the type-safe API client
-  api,
+  // Expose individual API methods
+  api: {
+    greet: (input: { name: string }) => api.greet(input),
+    getAppVersion: () => api.getAppVersion(),
+    saveData: (input: { key: string; value: unknown }) => api.saveData(input),
+    getSystemInfo: () => api.getSystemInfo(),
+    getVersions: () => api.getVersions(),
+  },
 
   // Additional platform info
   platform: process.platform,
@@ -25,7 +32,25 @@ console.log('[Preload] electronAPI exposed to main world');
 
 // Type definitions for renderer process
 export type ElectronAPI = {
-  api: ReturnType<typeof createClient<AppRouter>>;
+  api: {
+    greet: (input: { name: string }) => Promise<string>;
+    getAppVersion: () => Promise<string>;
+    saveData: (input: { key: string; value: unknown }) => Promise<{
+      success: boolean;
+      message: string;
+    }>;
+    getSystemInfo: () => Promise<{
+      platform: NodeJS.Platform;
+      arch: NodeJS.Architecture;
+      version: string;
+      hostname: string;
+    }>;
+    getVersions: () => Promise<{
+      electron: string;
+      chrome: string;
+      node: string;
+    }>;
+  };
   platform: NodeJS.Platform;
 };
 
