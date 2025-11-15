@@ -6,21 +6,21 @@ This directory contains resources needed for building and packaging your Electro
 
 To package your application, you need to provide icons for each platform:
 
-### macOS
-
-- **File**: `icon.icns`
-- **Size**: 512x512px or 1024x1024px
-- **Format**: ICNS (Apple Icon Image)
-
 ### Windows
 
-- **File**: `icon.ico`
+- **File**: `icons/win/icon.ico`
 - **Sizes**: 16x16, 32x32, 48x48, 64x64, 128x128, 256x256
 - **Format**: ICO (Windows Icon)
 
+### macOS
+
+- **File**: `icons/mac/icon.icns`
+- **Size**: 512x512px or 1024x1024px
+- **Format**: ICNS (Apple Icon Image)
+
 ### Linux
 
-- **Directory**: `icons/`
+- **Directory**: `icons/png`
 - **Files**: PNG images in various sizes
   - `16x16.png`
   - `32x32.png`
@@ -29,23 +29,37 @@ To package your application, you need to provide icons for each platform:
   - `128x128.png`
   - `256x256.png`
   - `512x512.png`
+  - `1024x1024.png`
 
-## Icon Generation Tools
+## Icon Generation Tool
 
-You can use these tools to generate icons from a single source image:
-
-### Electron Icon Maker
+By using [electron-icon-maker](https://github.com/jaretburkett/electron-icon-maker), you can generate icons for all platforms from a single source image.
 
 ```bash
-npm install -g electron-icon-maker
-electron-icon-maker --input=/path/to/icon.png --output=./build
+pnpm i -g electron-icon-maker
+
+electron-icon-maker --input=absolute/path/to/icon.png --output=./build
 ```
 
-### electron-icon-builder
+### File Structure
 
-```bash
-npm install -g electron-icon-builder
-electron-icon-builder --input=/path/to/icon.png --output=./build
+```txt
+build/
+├── README.md
+└── icons/
+    ├── win/
+    │   ├── icon.ico
+    ├── mac/           
+    │   ├── icon.icns
+    └── png/
+        ├── 16x16.png
+        ├── 32x32.png
+        ├── 48x48.png
+        ├── 64x64.png
+        ├── 128x128.png
+        ├── 256x256.png
+        └── 512x512.png
+        └── 1024x1024.png
 ```
 
 ## Design Guidelines
@@ -78,42 +92,3 @@ electron-icon-builder --input=/path/to/icon.png --output=./build
 - Various desktop environments may render differently
 - Ensure the icon works well with different themes
 - Keep sufficient padding around the edges
-
-## Quick Start
-
-If you want to test packaging without custom icons, you can use the default Electron icon temporarily. However, for production releases, you should always provide custom icons that represent your application.
-
-For testing purposes, you can temporarily comment out the icon references in `package.json`:
-
-```json
-{
-  "build": {
-    "mac": {
-      // "icon": "build/icon.icns"
-    },
-    "win": {
-      // "icon": "build/icon.ico"
-    },
-    "linux": {
-      // "icon": "build/icons"
-    }
-  }
-}
-```
-
-## File Structure
-
-```
-build/
-├── README.md          # This file
-├── icon.icns          # macOS icon (add this)
-├── icon.ico           # Windows icon (add this)
-└── icons/             # Linux icons directory
-    ├── 16x16.png      # Add these
-    ├── 32x32.png
-    ├── 48x48.png
-    ├── 64x64.png
-    ├── 128x128.png
-    ├── 256x256.png
-    └── 512x512.png
-```
