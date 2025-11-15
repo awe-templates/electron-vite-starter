@@ -28,7 +28,8 @@ const loadMetadata = async () => {
 
     // Get process versions
     const versions = await window.electronAPI.api.getVersions();
-    document.getElementById('electron-version')!.textContent = versions.electron;
+    document.getElementById('electron-version')!.textContent =
+      versions.electron;
     document.getElementById('chrome-version')!.textContent = versions.chrome;
     document.getElementById('node-version')!.textContent = versions.node;
 
@@ -51,7 +52,9 @@ document.addEventListener('DOMContentLoaded', () => {
   console.log('DOM loaded, electronAPI available:', !!window.electronAPI);
 
   // Set up theme toggle
-  const themeToggle = document.getElementById('theme-toggle') as HTMLButtonElement;
+  const themeToggle = document.getElementById(
+    'theme-toggle'
+  ) as HTMLButtonElement;
   themeToggle.addEventListener('click', toggleTheme);
 
   // Load metadata

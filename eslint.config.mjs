@@ -3,6 +3,9 @@ import tseslint from '@typescript-eslint/eslint-plugin';
 import tsparser from '@typescript-eslint/parser';
 import prettier from 'eslint-plugin-prettier';
 import prettierConfig from 'eslint-config-prettier';
+import { readFileSync } from 'fs';
+
+const prettierOptions = JSON.parse(readFileSync('./.prettierrc', 'utf8'));
 
 export default [
   {
@@ -30,11 +33,14 @@ export default [
       '@typescript-eslint': tseslint,
       prettier: prettier,
     },
+    settings: {
+      prettier: prettierOptions,
+    },
     rules: {
       ...eslint.configs.recommended.rules,
       ...tseslint.configs.recommended.rules,
       ...prettierConfig.rules,
-      'prettier/prettier': 'error',
+      'prettier/prettier': ['error', prettierOptions],
       '@typescript-eslint/no-unused-vars': [
         'error',
         {
@@ -74,11 +80,14 @@ export default [
       '@typescript-eslint': tseslint,
       prettier: prettier,
     },
+    settings: {
+      prettier: prettierOptions,
+    },
     rules: {
       ...eslint.configs.recommended.rules,
       ...tseslint.configs.recommended.rules,
       ...prettierConfig.rules,
-      'prettier/prettier': 'error',
+      'prettier/prettier': ['error', prettierOptions],
       '@typescript-eslint/no-unused-vars': [
         'error',
         {
