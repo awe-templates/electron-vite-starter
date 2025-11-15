@@ -74,9 +74,7 @@ export function createMainWindow(): BrowserWindow {
       responseHeaders: {
         ...details.responseHeaders,
         'Content-Security-Policy': [
-          process.env.ELECTRON_IS_DEV
-            ? "default-src 'self' 'unsafe-inline' 'unsafe-eval' http://localhost:* ws://localhost:*"
-            : "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'",
+          "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:;",
         ],
       },
     });
