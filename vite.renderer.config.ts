@@ -5,7 +5,7 @@ export default defineConfig({
   plugins: [],
   resolve: {
     alias: {
-      '@renderer': resolve(__dirname, 'src'),
+      '@app': resolve(__dirname, 'src'),
       '@shared': resolve(__dirname, 'electron/shared'),
       '@types': resolve(__dirname, 'types'),
     },

@@ -16,7 +16,7 @@ export default defineConfig({
   resolve: {
     alias: {
       '@main': resolve(__dirname, 'electron/main'),
-      '@renderer': resolve(__dirname, 'src'),
+      '@app': resolve(__dirname, 'src'),
       '@shared': resolve(__dirname, 'electron/shared'),
       '@preload': resolve(__dirname, 'electron/preload'),
     },

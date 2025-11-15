@@ -278,7 +278,7 @@ button?.addEventListener('click', async () => {
 The following path aliases are configured:
 
 - `@main/*` → `electron/main/*`
-- `@renderer/*` → `src/*`
+- `@app/*` → `src/*`
 - `@shared/*` → `electron/shared/*`
 - `@preload/*` → `electron/preload/*`
 - `@types/*` → `types/*`
